@@ -1,0 +1,127 @@
+% THIS IS SIGPROC-SP.TEX - VERSION 3.1
+% WORKS WITH V3.2SP OF ACM_PROC_ARTICLE-SP.CLS
+% APRIL 2009
+
+\documentclass{llncs}
+
+\usepackage{todonotes,times}
+\usepackage{algorithm}
+\usepackage{url}
+\usepackage[noend]{algpseudocode}
+\usepackage{mdframed}
+\usepackage{amsmath}
+\usepackage{paralist}
+\usepackage{multirow,paralist}
+\usepackage{fancybox}
+
+\newenvironment{fminipage}%
+{\begin{Sbox}\begin{minipage}}%
+{\end{minipage}\end{Sbox}\fbox{\TheSbox}}
+
+\makeatletter
+%\renewcommand{\ALG@beginalgorithmic}{\scriptsize}
+\makeatother
+
+\newtheorem{defn}{\textbf{Definition}}
+\newtheorem{thm}{\textbf{Theorem}}
+\newtheorem{cor}{\textbf{Corollary}}
+%\newtheorem{lemma}{\textbf{Lemma}}
+
+\begin{document}
+
+\mainmatter              % start of the contributions
+\title{On the Efficacy of DNS Resolver Privacy Preservation}
+
+\author{Gene Tsudik and Christopher A. Wood}
+
+\institute{University of California Irvine, Irvine CA, USA\\
+\email{\{gene.tsudik,woodc1@\}uci.edu}}
+
+% typeset the title of the contribution
+\maketitle
+
+\begin{abstract}
+TODO
+\end{abstract}
+
+%%% http://software.imdea.org/~bkoepf/papers/ndss13.pdf
+
+\section{Introduction}
+The need for a private Domain Name System (DNS) has become increasingly important
+in recent years. There are several different proposals to address this
+growing problem, including DNS-over-TLS and DNSCurve.
+The former enables clients to create ephemeral sessions with either
+their resolver or authoritative (stub) servers in which queries can be issued.
+The latter uses per-query encryption to protect queries between clients and servers.
+Encryption is core mechanism used to enable client privacy in both of these
+solutions. However, in a recent study, Shulman showed that encryption alone
+is insufficient to protect the privacy of queries. Information leaked
+in DNS side channels, such query timing, frequency, and resolution ``chains,''
+may reveal the contents of a query. Moreover, by observing the
+trust properties of DNS servers and their responses, an adversary may also
+learn the specific record within a domain that was requested.
+
+There are a variety of mechanisms that can be used to plug these side channels, including:
+message padding, query chaffing, query partitioning or splitting, and message interleaving.
+Each of these techniques can increase the amount of entropy of a given query. Message buffering
+can also be used to minimize information that is leaked through timing side channels.
+Using query traces collected through DNS-OARC, we systematically study the efficacy of these
+techniques against Shulman's attacks. We compare the privacy gains against the observed slowdown
+induced by these privacy-preserving techniques.
+
+Moreover, Shulman also showed that caching resolvers can be identified through timing side channel
+attacks. We discuss several resolver techniques that can be used to deter these attacks
+without introducing extra load on the authoritative name servers. Specifically, we study
+randomized response delays to clients to mask the presence of caches. With
+appropriately computed delays, resolver identification becomes difficult.
+
+Finally, to complement query and resolver privacy, we also study client anonymity. In particular, we seek to
+learn to what extent (cleartext) DNS query patterns can be linked to individual users.
+Trivial linkability attacks mean that stub servers can learn information about individual
+clients, even if encryption (without mutual authentication) is used to protect queries
+in transit. Using both supervised and unsupervised machine learning algorithms,
+we conducted linkability experiments in a scenario with only two users browsing the web
+for a large amount of time (e.g., the course of an entire day). Our results indicate that
+query patterns have no discernible impact on client anonymity.
+
+
+
+The rest of this report is organized as follows. In Section \ref{sec:model} we formalize
+the adversarial model and XXX
+
+\section{System Model}\label{sec:model}
+The DNS system is composed of clients $C$, recursive resolvers $R$, and stub (authoritative)
+servers $S$. In the simplest use case, clients want to map a domain name to an IP address to
+establish a connection with a web server or host. Clients express queries to a recursive
+resolver that is responsible for finding the answer to this mapping query. If the answer
+to the query has not yet been fetched and previously cached, then the recursive resolver
+proceeds to ask the question to stub servers, starting at the root for the top-level-domain (TLD).
+For example, if the client query is {\tt a.b.com}, then the stub associated with the com
+TLD is queried for the answer. Among the possible options, the stub may return either an
+address (in an A record) or a pointer to another stub server to query (in a NS record).
+The resolver will recursively query stub servers until (a) an address is returned or (b)
+a ``non-existent'' flag indicating that the name cannot be resolved to an address. This
+final result is then relayed to the client to complete the process.
+
+Traditionally, DNS packets are sent in cleartext over UDP between all parties. This has
+recently been flagged as a privacy concern \cite{bortzmeyer2013}. Recently, a specification to run the
+$C-R$ phase of the protocol over TLS to preserve query privacy (confidentiality) was
+proposed \cite{dnstls}. In theory, this prevents an eavesdropping adversary between $C$ and $R$ from
+learning the contents of a query. DNSCurve is an alternative scheme to individually encrypt
+requests and responses to achieve the same degree of privacy \cite{dnscurve}. However,
+Shulman showed that side channel information in the protocol, such as the timing and sizes
+of requests and responses, reveal a non-negligible amount of information about the
+queries \cite{shulman}.
+
+XXX: formal modeling to plug leakage... outline our experiment and plan, and then discuss why it wasn't so great
+
+
+
+
+
+\medskip
+\small
+\bibliographystyle{abbrv}
+\bibliography{ref}
+
+\end{document}

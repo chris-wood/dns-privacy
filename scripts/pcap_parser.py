@@ -56,10 +56,10 @@ class DNSPacket(object):
         validPacket = False
         ipv4 = True
 
-        print dpkt.ethernet.ETH_TYPE_IP
-        print dpkt.ethernet.ETH_TYPE_IP6
-        print self.ethernetPacket.type
-        print repr(self.ethernetPacket)
+        #print dpkt.ethernet.ETH_TYPE_IP
+        #print dpkt.ethernet.ETH_TYPE_IP6
+        #print self.ethernetPacket.type
+        #print repr(self.ethernetPacket)
         if self.ethernetPacket.type == dpkt.ethernet.ETH_TYPE_IP:
             validPacket = True
         if self.ethernetPacket.type == dpkt.ethernet.ETH_TYPE_IP6:
@@ -71,7 +71,7 @@ class DNSPacket(object):
 
         self.ip = self.ethernetPacket.data
         if (ipv4 and self.ip.p == dpkt.ip.IP_PROTO_UDP) or (not ipv4 and self.ip.nxt == dpkt.ip.IP_PROTO_UDP):
-            print "ok"
+            #print "ok"
             self.udp = self.ip.data
 
             tb = None
@@ -93,8 +93,6 @@ class DNSPacket(object):
             except Exception as e:
                 isDns = False
                 tb = traceback.format_exc()
-                if debug:
-                    print >> sys.stderr, str(e)
             finally:
                 if tb != None and debug:
                     print tb
@@ -119,7 +117,7 @@ class PacketParser(object):
                 # gzip = dpkt.gzip.Gzip()
                 # gzip.unpack(eth)
 
-                print eth
+                #print eth
                 packet = DNSPacket(index, eth, ts)
                 if packet.isDNS:
                     dnsPackets.append(packet)
