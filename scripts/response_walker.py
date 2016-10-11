@@ -18,7 +18,9 @@ def process_pcap(fh):
     packets = parser.parseDNS(fh)
     for packet in packets:
         if packet.dns.qr == 1:
-            print len(packet.ethernetPacket.data)
+            val = len(packet.ethernetPacket.data)
+            print val
+            runner.push(val)
 
 for dirpath, dnames, fnames in os.walk(sys.argv[1]):
     for f in fnames:
@@ -28,8 +30,7 @@ for dirpath, dnames, fnames in os.walk(sys.argv[1]):
                 process_pcap(fh)
         elif f.endswith(".pcap"):
             process_pcap(open(os.path.join(dirpath, f), "r"))
-
         print >> sys.stderr, runner.all()
 
-for domain in domains:
-    print str(domain)
+#for domain in domains:
+#    print str(domain)
