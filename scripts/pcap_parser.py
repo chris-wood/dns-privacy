@@ -69,6 +69,7 @@ class DNSPacket(object):
         if not validPacket:
             return False
 
+        print self.ethernetPacket.__class__.__name__
         self.ip = self.ethernetPacket.data
         print self.ip
         #if type(self.ip) == type(""):
