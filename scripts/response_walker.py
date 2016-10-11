@@ -17,14 +17,8 @@ def process_pcap(fh):
     parser = PacketParser()
     packets = parser.parseDNS(fh)
     for packet in packets:
-        if packet.query != None:
-            if packet.query.name not in domains:
-                print >> sys.stderr, "%d,%s" % (num, packet.query.name)
-                num += 1
-
-            name = packet.query.name
-            domains.add(name)
-            runner.push(len(name))
+        if packet.dns.qr == 1:
+            print len(packet.ethernetPacket.data)
 
 for dirpath, dnames, fnames in os.walk(sys.argv[1]):
     for f in fnames:

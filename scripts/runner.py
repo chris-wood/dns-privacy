@@ -57,8 +57,9 @@ def main(args):
     filenames = args.file
     dnsPackets = []
     for filename in filenames:
-        parser = PacketParser(filename)
-        packets = parser.parseDNS(filename)
+        parser = PacketParser()
+        fh = open(filename, 'r')
+        packets = parser.parseDNS(fh)
         for packet in packets:
             dnsPackets.append(packet)
 
@@ -67,7 +68,8 @@ def main(args):
         for subset in itertools.combinations(extractors, num_of_extractors):
             features = extract(dnsPackets, subset)
             if features != None:
-                run_classifiers("rawr", features)
+                identifier = "-".join(map(lambda e : str(e), list(subset)))
+                run_classifiers(identifier, features)
             else:
                 print "Null features %s" % (str(subset))
 

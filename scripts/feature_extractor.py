@@ -119,6 +119,12 @@ class FeatureExtractor(object):
     def extract(self, index, params = {}):
         pass
 
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
+
 class TestFeatureExtractor(FeatureExtractor):
     ''' Template for new feature extractors
     '''
@@ -133,6 +139,12 @@ class TestFeatureExtractor(FeatureExtractor):
         #     pass
 
         return features, sources
+
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
 
 class WindowedFeatureExtractor(FeatureExtractor):
     def __init__(self, packets, windowExtractor):
@@ -167,6 +179,12 @@ class WindowedFeatureExtractor(FeatureExtractor):
 
         return features
 
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
+
 class QueryComponentDifferenceDiversityFeatureExtractor(FeatureExtractor):
     def __init__(self, packets, params = {}):
         FeatureExtractor.__init__(self, packets, params)
@@ -199,6 +217,12 @@ class QueryComponentDifferenceDiversityFeatureExtractor(FeatureExtractor):
 
         return features, sources
 
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
+
 class QueryEntropyDiversityFeatureExtractor(FeatureExtractor):
     def __init__(self, packets, params = {}):
         FeatureExtractor.__init__(self, packets, params)
@@ -230,6 +254,12 @@ class QueryEntropyDiversityFeatureExtractor(FeatureExtractor):
             i = offset
 
         return features, sources
+
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
 
 class TargetQueryFrequencyFeatureExtractor(FeatureExtractor):
     def __init__(self, packets, params = {}):
@@ -270,6 +300,12 @@ class TargetQueryFrequencyFeatureExtractor(FeatureExtractor):
 
         return features, sources
 
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
+
 class QueryFrequencyFeatureExtractor(FeatureExtractor):
     def __init__(self, packets, params = {}):
         FeatureExtractor.__init__(self, packets, params)
@@ -302,6 +338,12 @@ class QueryFrequencyFeatureExtractor(FeatureExtractor):
 
         return features, sources
 
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
+
 class TargetAddressFeatureExtractor(FeatureExtractor):
     def __init__(self, packets, params = {}):
         FeatureExtractor.__init__(self, packets, params)
@@ -324,6 +366,12 @@ class TargetAddressFeatureExtractor(FeatureExtractor):
 
         return features, sources
 
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
+
 class TargetNameFeatureExtractor(FeatureExtractor):
     def __init__(self, packets, params = {}):
         FeatureExtractor.__init__(self, packets, params)
@@ -343,6 +391,12 @@ class TargetNameFeatureExtractor(FeatureExtractor):
                 features.append(feature)
 
         return features, sources
+
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
 
 class QueryResolutionTimeFeatureExtractor(FeatureExtractor):
     def __init__(self, packets, params = {}):
@@ -370,6 +424,12 @@ class QueryResolutionTimeFeatureExtractor(FeatureExtractor):
                         features.append(feature)
 
         return features, sources
+
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
 
 class QueryLengthFeatureExtractor(FeatureExtractor):
     def __init__(self, packets, params = {}):
@@ -399,6 +459,12 @@ class QueryLengthFeatureExtractor(FeatureExtractor):
 
             features.append(feature)
         return features, sources
+
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return str(self)
 
 def join(featureSet):
     if len(featureSet) == 1:
@@ -481,8 +547,9 @@ def main(args):
 
     dnsPackets = []
     for filename in filenames:
-        parser = PacketParser(filename)
-        packets = parser.parseDNS(filename)
+        parser = PacketParser()
+        fh = open(filename, 'r')
+        packets = parser.parseDNS(fh)
         for packet in packets:
             dnsPackets.append(packet)
 
