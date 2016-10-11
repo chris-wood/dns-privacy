@@ -69,12 +69,13 @@ class DNSPacket(object):
         if not validPacket:
             return False
 
-        print self.ethernetPacket.__class__.__name__
+        #print self.ethernetPacket.__class__.__name__
         self.ip = self.ethernetPacket.data
-        print self.ip
+        #print self.ip
         #if type(self.ip) == type(""):
         #    return False
-        if (ipv4 and self.ip.p == dpkt.ip.IP_PROTO_UDP) or (not ipv4 and self.ip.nxt == dpkt.ip.IP_PROTO_UDP):
+        if (ipv4 and self.ip.v == 4 and self.ip.p == dpkt.ip.IP_PROTO_UDP) or (not ipv4 and self.ip.v == 6 and self.ip.nxt == dpkt.ip.IP_PROTO_UDP):
+        #if (ipv4 and self.ip.p == dpkt.ip.IP_PROTO_UDP) or (not ipv4 and self.ip.nxt == dpkt.ip.IP_PROTO_UDP):
             #print "ok"
             self.udp = self.ip.data
 
