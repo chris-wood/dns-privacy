@@ -70,7 +70,8 @@ class DNSPacket(object):
             return False
 
         self.ip = self.ethernetPacket.data
-        if (ipv4 and self.ip.p == dpkt.ip.IP_PROTO_UDP) or (not ipv4 and self.ip.nxt == dpkt.ip.IP_PROTO_UDP):
+        #if (ipv4 and self.ip.p == dpkt.ip.IP_PROTO_UDP) or (not ipv4 and self.ip.nxt == dpkt.ip.IP_PROTO_UDP):
+        if True:
             #print "ok"
             self.udp = self.ip.data
 
