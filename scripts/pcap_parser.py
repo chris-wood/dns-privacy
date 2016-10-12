@@ -56,24 +56,17 @@ class DNSPacket(object):
         validPacket = False
         ipv4 = True
 
-        #print dpkt.ethernet.ETH_TYPE_IP
-        #print dpkt.ethernet.ETH_TYPE_IP6
-        #print self.ethernetPacket.type
-        #print repr(self.ethernetPacket)
+        # Ensure that the packet is IPv4 or IPv6 first
         if self.ethernetPacket.type == dpkt.ethernet.ETH_TYPE_IP:
             validPacket = True
         if self.ethernetPacket.type == dpkt.ethernet.ETH_TYPE_IP6:
             validPacket = True
             ipv4 = False
-
         if not validPacket:
             return False
 
-        #print self.ethernetPacket.__class__.__name__
+        # Extract the IP packet and check to make sure it's a UDP packet
         self.ip = self.ethernetPacket.data
-        #print self.ip
-        #if type(self.ip) == type(""):
-        #    return False
         if (ipv4 and self.ip.v == 4 and self.ip.p == dpkt.ip.IP_PROTO_UDP) or (not ipv4 and self.ip.v == 6 and self.ip.nxt == dpkt.ip.IP_PROTO_UDP):
         #if (ipv4 and self.ip.p == dpkt.ip.IP_PROTO_UDP) or (not ipv4 and self.ip.nxt == dpkt.ip.IP_PROTO_UDP):
             #print "ok"
@@ -116,13 +109,7 @@ class PacketParser(object):
         # gzip = dpkt.gzip.Gzip()
         for ts, pkt in pcapFile:
             try:
-                # gzip = dpkt.gzip.Gzip(pkt)
-                # raw_buffer = gzip.unpack(pkt)
                 eth = dpkt.ethernet.Ethernet(pkt)
-                # gzip = dpkt.gzip.Gzip()
-                # gzip.unpack(eth)
-
-                #print eth
                 packet = DNSPacket(index, eth, ts)
                 if packet.isDNS:
                     dnsPackets.append(packet)
