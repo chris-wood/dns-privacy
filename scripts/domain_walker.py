@@ -5,6 +5,8 @@ import gzip
 from pcap_parser import *
 from stats import *
 
+import subprocess
+
 domains = set()
 num = 0
 runner = RunningStat()
@@ -31,7 +33,10 @@ for dirpath, dnames, fnames in os.walk(sys.argv[1]):
     for f in fnames:
         if f.endswith(".pcap.gz"):
             print >> sys.stderr, "Opening %s" % (f)
-            with gzip.open(os.path.join(dirpath, f), 'rb') as fh:
+            filename = os.path.join(dirpath, f)
+            subprocess.Popen(['gunzip', filename])
+
+            with open(filename[0:len(filename) - 3], 'rb') as fh:
                 process_pcap(fh)
         elif f.endswith(".pcap"):
             process_pcap(open(os.path.join(dirpath, f), "r"))
