@@ -71,8 +71,6 @@ class DNSPacket(object):
         # Extract the IP packet and check to make sure it's a UDP packet
         self.ip = self.ethernetPacket.data
         if (ipv4 and self.ip.v == 4 and self.ip.p == dpkt.ip.IP_PROTO_UDP) or (not ipv4 and self.ip.v == 6 and self.ip.nxt == dpkt.ip.IP_PROTO_UDP):
-        #if (ipv4 and self.ip.p == dpkt.ip.IP_PROTO_UDP) or (not ipv4 and self.ip.nxt == dpkt.ip.IP_PROTO_UDP):
-            #print "ok"
             self.udp = self.ip.data
 
             tb = None
@@ -110,6 +108,7 @@ class PacketParser(object):
         dnsPackets = []
         index = 0
         for ts, pkt in pcapFile:
+            print pkt
             try:
                 eth = dpkt.ethernet.Ethernet(pkt)
                 packet = DNSPacket(index, eth, ts)

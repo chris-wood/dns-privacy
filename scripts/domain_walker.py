@@ -31,15 +31,15 @@ def process_pcap(fh):
 
 for dirpath, dnames, fnames in os.walk(sys.argv[1]):
     for f in fnames:
+        filename = os.path.join(dirpath, f)
         if f.endswith(".pcap.gz"):
             print >> sys.stderr, "Opening %s" % (f)
-            filename = os.path.join(dirpath, f)
-            subprocess.Popen(['gunzip', filename])
+            #subprocess.Popen(['gunzip', filename])
 
-            with open(filename[0:len(filename) - 3], 'rb') as fh:
+            with gzip.open(filename, 'rb') as fh:
                 process_pcap(fh)
         elif f.endswith(".pcap"):
-            process_pcap(open(os.path.join(dirpath, f), "r"))
+            process_pcap(open(filename, "r"))
 
         print >> sys.stderr, runner.all()
 
