@@ -59,6 +59,9 @@ class DNSPacket(object):
         validPacket = False
         ipv4 = True
 
+        if not isinstance(self.ethernetPacket.data, dpkt.ip.IP):
+            return False
+
         # Ensure that the packet is IPv4 or IPv6 first
         if self.ethernetPacket.type == dpkt.ethernet.ETH_TYPE_IP:
             validPacket = True
@@ -108,7 +111,7 @@ class PacketParser(object):
         dnsPackets = []
         index = 0
         for ts, pkt in pcapFile:
-            print pkt
+            #print pkt
             try:
                 eth = dpkt.ethernet.Ethernet(pkt)
                 packet = DNSPacket(index, eth, ts)
