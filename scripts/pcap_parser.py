@@ -109,7 +109,6 @@ class PacketParser(object):
 
         dnsPackets = []
         index = 0
-        # gzip = dpkt.gzip.Gzip()
         for ts, pkt in pcapFile:
             try:
                 eth = dpkt.ethernet.Ethernet(pkt)
@@ -117,7 +116,7 @@ class PacketParser(object):
                 if packet.isDNS:
                     dnsPackets.append(packet)
             except Exception as e:
-                raise
+                pass
             index = index + 1
 
         return dnsPackets
