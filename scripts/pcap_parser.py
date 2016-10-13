@@ -50,7 +50,10 @@ class DNSPacket(object):
         self.records = []
         self.ts = ts
         self.index = index
-        self.isDNS = self.unpack()
+        try:
+            self.isDNS = self.unpack()
+        except:
+            self.isDNS = False
 
     def unpack(self, debug = False):
         validPacket = False
