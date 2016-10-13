@@ -25,6 +25,7 @@ def process_pcap(fh):
             name = packet.query.name
             domains.add(name)
             runner.push(len(name))
+            print >> sys.stderr, name, len(name)
 
 for dirpath, dnames, fnames in os.walk(sys.argv[1]):
     for f in fnames:
